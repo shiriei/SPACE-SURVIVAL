@@ -1,95 +1,67 @@
-# 🧮 Factorial in Python
+# SPACE SURVIVAL
 
-A simple Python program to calculate the **factorial** of a given number. This repository is beginner-friendly and can be used as a first open-source contribution or Python practice project.
+A colorful, real-time space-shooter arcade game with two ways to play: a full-screen browser game rendered on HTML Canvas, and the original turn-based Python terminal game. Pilot a stranded ship through a purple nebula, dodge cartoon asteroids and hostile drones, collect energy, and chase a new high score.
 
-## 📖 What is Factorial?
+## Browser game
 
-The factorial of a non-negative integer `n` is the product of all positive integers less than or equal to `n`.
+The browser version uses only HTML, CSS, and JavaScript. It needs no package installation, build step, or backend; Python's standard-library static server is used to serve the files in Codespaces.
 
-**Formula:**
+### Launch in GitHub Codespaces
 
-n! = n × (n - 1) × (n - 2) × ... × 2 × 1
+From the repository root, run:
 
-### Examples
-
-```
-5! = 5 × 4 × 3 × 2 × 1 = 120
+```bash
+python3 -m http.server 8000 --bind 0.0.0.0
 ```
 
-```
-0! = 1
+In Codespaces, open the **Ports** tab, find port `8000`, and choose **Open in Browser**. If the port is not listed, use **Add Port** and enter `8000`. The game page is `index.html` at the forwarded port. The server runs in that terminal; stop it with `Ctrl+C` when you are done.
+
+### Features and controls
+
+- Centered arcade start screen with animated nebula, stars, drifting asteroids, and distant ships.
+- Steer horizontally with **A/D** or **Left/Right**, and adjust altitude with **R/F**. Hold **W/Up** to accelerate the ship and scroll the world faster; release to coast smoothly back to cruise.
+- Hold **S/Down** to brake toward minimum forward speed without reversing the world. Hold **Space** to fire; use **Escape** or **P** to pause/resume.
+- Dodge incoming asteroids and enemy projectiles; destroy threats for bonus points.
+- Collect glowing energy cells to replenish the weapons supply.
+- Track score, survival time, level, hull integrity, and energy in compact arcade HUD elements.
+- Use the pause and restart controls to manage a flight. Instructions and high score appear in centered overlays.
+- The game-over screen records the final score and time and offers replay or a return to the title.
+- The title-screen **QUIT** button opens an in-game exit confirmation; **RETURN TO TITLE** keeps the browser game ready to play.
+- On small touch screens, use the on-screen directional and fire controls.
+- A best score is stored in the browser's local storage on that device/browser.
+
+Movement and hazards use elapsed-time updates, so the flight speed stays consistent across different frame rates. If browser storage is disabled, the game remains playable but cannot remember a record.
+
+## Original terminal game
+
+The Python game in `game.py` remains available as a separate turn-based version. It keeps its event choices, resource management, replay flow, and local JSON high score. The browser game does not invoke the Python game; it is a self-contained frontend that adapts the same survival, hull, energy, threat, and scoring ideas to real-time play. `hello.py` remains the original factorial example.
+
+Run the terminal game with:
+
+```bash
+python3 game.py
 ```
 
----
+For a repeatable random sequence, use `python3 game.py --seed 42`. Its score is stored in `high_score.json`, independently of the browser score.
 
-## 📂 Project Structure
+## Tests
 
+Run the standard-library terminal game tests with:
+
+```bash
+python3 -m unittest
 ```
+
+## Project structure
+
+```text
 .
-├── factorial.py
-└── README.md
+|-- index.html     # Browser game structure and overlays
+|-- space.css      # Full-screen arcade interface and responsive controls
+|-- arcade.js      # Canvas rendering and real-time game logic
+|-- game.py        # Original terminal game
+|-- test_game.py   # Terminal game tests
+|-- high_score.json # Terminal game's local record
+|-- hello.py       # Original factorial example
+`-- README.md
 ```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.x installed on your system
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/<your-username>/<repository-name>.git
-cd <repository-name>
-```
-
-### Run the Program
-
-```bash
-python factorial.py
-```
-
----
-
-## 💻 Sample Output
-
-```
-Enter a number: 5
-Factorial of 5 is 120
-```
-
----
-
-## 🛠️ Concepts Used
-
-- Variables
-- User Input
-- Loops / Recursion (depending on implementation)
-- Functions
-- Basic Python Syntax
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-If you'd like to improve the code or documentation:
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes.
-4. Commit your changes.
-5. Open a Pull Request.
-
----
-
-## 📜 License
-
-This project is open source and available under the MIT License.
-
----
-
-⭐ If you found this repository helpful, consider giving it a star!
