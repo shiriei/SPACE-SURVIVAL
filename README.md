@@ -8,13 +8,13 @@ The browser version uses only HTML, CSS, and JavaScript. It needs no package ins
 
 ### Launch in GitHub Codespaces
 
-From the repository root, run:
+From the repository root, serve the `frontend/` directory:
 
 ```bash
-python3 -m http.server 8000 --bind 0.0.0.0
+python3 -m http.server 8000 --bind 0.0.0.0 --directory frontend
 ```
 
-In Codespaces, open the **Ports** tab, find port `8000`, and choose **Open in Browser**. If the port is not listed, use **Add Port** and enter `8000`. The game page is `index.html` at the forwarded port. The server runs in that terminal; stop it with `Ctrl+C` when you are done.
+In Codespaces, open the **Ports** tab, find port `8000`, and choose **Open in Browser**. If the port is not listed, use **Add Port** and enter `8000`. The server serves `frontend/index.html` at the forwarded port. The server runs in that terminal; stop it with `Ctrl+C` when you are done.
 
 ### Features and controls
 
@@ -34,34 +34,37 @@ Movement and hazards use elapsed-time updates, so the flight speed stays consist
 
 ## Original terminal game
 
-The Python game in `game.py` remains available as a separate turn-based version. It keeps its event choices, resource management, replay flow, and local JSON high score. The browser game does not invoke the Python game; it is a self-contained frontend that adapts the same survival, hull, energy, threat, and scoring ideas to real-time play. `hello.py` remains the original factorial example.
+The Python game in `python_game/game.py` remains available as a separate turn-based version. It keeps its event choices, resource management, replay flow, and local JSON high score in `python_game/high_score.json`. The browser game does not invoke the Python game; it is a self-contained frontend that adapts the same survival, hull, energy, threat, and scoring ideas to real-time play. `hello.py` remains the original factorial example.
 
-Run the terminal game with:
+From the repository root, run the terminal game with:
 
 ```bash
-python3 game.py
+python3 python_game/game.py
 ```
 
-For a repeatable random sequence, use `python3 game.py --seed 42`. Its score is stored in `high_score.json`, independently of the browser score.
+For a repeatable random sequence, use `python3 python_game/game.py --seed 42`. Its score is stored in `python_game/high_score.json`, independently of the browser score.
 
 ## Tests
 
-Run the standard-library terminal game tests with:
+Run the standard-library terminal game tests from the repository root with:
 
 ```bash
-python3 -m unittest
+python3 -m unittest discover -s python_game -p 'test_*.py'
 ```
 
 ## Project structure
 
 ```text
 .
-|-- index.html     # Browser game structure and overlays
-|-- space.css      # Full-screen arcade interface and responsive controls
-|-- arcade.js      # Canvas rendering and real-time game logic
-|-- game.py        # Original terminal game
-|-- test_game.py   # Terminal game tests
-|-- high_score.json # Terminal game's local record
-|-- hello.py       # Original factorial example
-`-- README.md
+|-- frontend/
+|   |-- index.html  # Browser game structure and overlays
+|   |-- arcade.js   # Canvas rendering and real-time game logic
+|   `-- space.css   # Full-screen arcade interface and responsive controls
+|-- python_game/
+|   |-- game.py         # Turn-based terminal game
+|   |-- test_game.py    # Terminal game tests
+|   `-- high_score.json # Terminal game's local record
+|-- hello.py            # Original factorial example
+|-- README.md
+`-- .gitignore
 ```
