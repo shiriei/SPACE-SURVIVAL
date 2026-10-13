@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#160e3a">
+  <title>SPACE SURVIVAL</title>
+  <link rel="stylesheet" href="space.css">
+  <script src="arcade.js" defer></script>
+</head>
+<body>
+  <canvas id="game-canvas" width="1200" height="720" tabindex="-1" aria-label="Animated Space Survival game world"></canvas>
+  <div class="screen-shade" aria-hidden="true"></div>
+
+  <main class="game-shell">
+    <section class="arcade-hud" aria-label="Ship status">
+      <div class="resource-chip hull-chip">
+        <span class="chip-icon heart-icon" aria-hidden="true">♥</span>
+        <div class="chip-content"><span class="chip-label">HULL</span><div class="chip-bar"><span id="hull-fill"></span></div></div>
+        <strong id="hull-value">100%</strong>
+      </div>
+      <div class="resource-chip energy-chip">
+        <span class="chip-icon bolt-icon" aria-hidden="true">ϟ</span>
+        <div class="chip-content"><span class="chip-label">ENERGY</span><div class="chip-bar"><span id="energy-fill"></span></div></div>
+        <strong id="energy-value">100%</strong>
+      </div>
+      <div class="resource-chip speed-chip">
+        <span class="chip-icon speed-icon" aria-hidden="true">»</span>
+        <div class="chip-content"><span class="chip-label">FLIGHT SPEED</span><div class="chip-bar"><span id="speed-fill"></span></div></div>
+        <strong id="speed-value">1.0x</strong>
+      </div>
+    </section>
+
+    <section class="score-hud" aria-label="Flight score">
+      <div class="score-line"><span id="score-label">BEST FLIGHT</span><strong id="score-value">000000</strong></div>
+      <div class="flight-line"><span id="time-value">00:00</span><span class="hud-divider">✦</span><span>LV <b id="level-value">1</b></span></div>
+    </section>
+
+    <div class="game-actions" id="game-actions" hidden>
+      <button class="hud-button" id="pause-button" type="button" aria-label="Pause game">Ⅱ</button>
+      <button class="hud-button restart-button" id="restart-button" type="button" aria-label="Restart game">↻</button>
+    </div>
+
+    <section class="scene-overlay menu-screen" id="menu-screen" aria-labelledby="game-title">
+      <div class="menu-panel">
+        <span class="menu-kicker"><i></i> ARCADE CLASSICS // DEEP SPACE</span>
+        <h1 id="game-title">SPACE<br><span>SURVIVAL</span></h1>
+        <p class="tagline">Survive the chaos. Collect resources.<br>Reach for a higher score.</p>
+        <div class="menu-buttons">
+          <button class="arcade-button start-button" id="start-button" type="button"><span>START GAME</span><b aria-hidden="true">▶</b></button>
+          <button class="arcade-button secondary-button" id="instructions-button" type="button">INSTRUCTIONS</button>
+          <button class="arcade-button secondary-button" id="highscore-button" type="button">HIGH SCORE</button>
+          <button class="arcade-button quit-button" id="quit-button" type="button">QUIT</button>
+        </div>
+        <div class="menu-record">TOP FLIGHT <strong id="record-value">000000</strong></div>
+      </div>
+      <span class="orbit-mark orbit-mark-one" aria-hidden="true"></span>
+      <span class="orbit-mark orbit-mark-two" aria-hidden="true"></span>
+    </section>
+
+    <section class="scene-overlay dialog-screen" id="instructions-overlay" hidden aria-labelledby="instructions-title" role="dialog" aria-modal="true">
+      <div class="dialog-panel">
+        <span class="menu-kicker"><i></i> PILOT TRAINING</span>
+        <h2 id="instructions-title">HOW TO <span>SURVIVE</span></h2>
+        <div class="instruction-list">
+          <p><kbd>A</kbd><kbd>D</kbd><kbd>←</kbd><kbd>→</kbd><span>Steer left and right</span></p>
+          <p><kbd>W</kbd><kbd>↑</kbd><span>Accelerate forward through the field</span></p>
+          <p><kbd>S</kbd><kbd>↓</kbd><span>Brake toward minimum speed; release to coast back to cruise</span></p>
+          <p><kbd>R</kbd><kbd>F</kbd><span>Adjust ship altitude</span></p>
+          <p><kbd class="wide-key">SPACE</kbd><span>Fire blue bolts. Hold for rapid fire.</span></p>
+          <p><kbd class="wide-key">ESC</kbd><span>Pause or resume the flight.</span></p>
+        </div>
+        <p class="dialog-note">Blast rocks and drones for points. Collect golden energy cells to recharge your weapons. Keep your hull above zero.</p>
+        <button class="arcade-button secondary-button dialog-back" id="instructions-back-button" type="button">BACK TO MENU</button>
+      </div>
+    </section>
+
+    <section class="scene-overlay dialog-screen" id="highscore-overlay" hidden aria-labelledby="highscore-title" role="dialog" aria-modal="true">
+      <div class="dialog-panel score-panel">
+        <span class="menu-kicker"><i></i> FLIGHT RECORDER</span>
+        <h2 id="highscore-title">HALL OF <span>FAME</span></h2>
+        <p class="record-number" id="highscore-value">000000</p>
+        <p class="dialog-note">Your best flight is saved in this browser.</p>
+        <button class="arcade-button secondary-button dialog-back" id="highscore-back-button" type="button">BACK TO MENU</button>
+      </div>
+    </section>
+
+    <section class="scene-overlay dialog-screen" id="pause-overlay" hidden aria-labelledby="pause-title" role="dialog" aria-modal="true">
+      <div class="dialog-panel pause-panel">
+        <span class="menu-kicker"><i></i> TIME OUT</span>
+        <h2 id="pause-title">PAUSED</h2>
+        <p class="tagline">The stars can wait.<br>Your next move is yours.</p>
+        <button class="arcade-button start-button" id="resume-button" type="button"><span>RESUME GAME</span><b aria-hidden="true">▶</b></button>
+        <button class="arcade-button secondary-button dialog-back" id="pause-menu-button" type="button">RETURN TO MENU</button>
+      </div>
+    </section>
+
+    <section class="scene-overlay dialog-screen" id="quit-overlay" hidden aria-labelledby="quit-title" role="dialog" aria-modal="true">
+      <div class="dialog-panel pause-panel">
+        <span class="menu-kicker"><i></i> FLIGHT CONTROL</span>
+        <h2 id="quit-title">SIGNING<br><span>OFF?</span></h2>
+        <p class="tagline">Your ship will be waiting<br>among the stars.</p>
+        <button class="arcade-button start-button" id="quit-return-button" type="button"><span>RETURN TO TITLE</span><b aria-hidden="true">↗</b></button>
+        <button class="arcade-button secondary-button dialog-back" id="quit-cancel-button" type="button">KEEP PLAYING</button>
+      </div>
+    </section>
+
+    <section class="scene-overlay dialog-screen" id="gameover-overlay" hidden aria-labelledby="gameover-title" role="dialog" aria-modal="true">
+      <div class="dialog-panel gameover-panel">
+        <span class="menu-kicker"><i></i> SHIP LOG // FLIGHT ENDED</span>
+        <h2 id="gameover-title">GAME <span>OVER</span></h2>
+        <p class="tagline">The stars remember your run.</p>
+        <div class="final-readouts">
+          <div><span>FINAL SCORE</span><strong id="final-score">000000</strong></div>
+          <div><span>SURVIVED</span><strong id="final-time">00:00</strong></div>
+        </div>
+        <button class="arcade-button start-button" id="play-again-button" type="button"><span>PLAY AGAIN</span><b aria-hidden="true">▶</b></button>
+        <button class="arcade-button secondary-button dialog-back" id="gameover-menu-button" type="button">BACK TO MENU</button>
+      </div>
+    </section>
+
+    <div class="keyboard-hints" aria-label="Controls">
+      <span><kbd>A</kbd><kbd>D</kbd><kbd>←</kbd><kbd>→</kbd> <b>STEER</b></span>
+      <i></i>
+      <span><kbd>W</kbd><kbd>↑</kbd> <b>THRUST</b></span>
+      <i></i>
+      <span><kbd>S</kbd><kbd>↓</kbd> <b>BRAKE</b></span>
+      <i></i>
+      <span><kbd>R</kbd><kbd>F</kbd> <b>ALTITUDE</b></span>
+      <i></i>
+      <span><kbd class="wide-key">SPACE</kbd> <b>SHOOT</b></span>
+    </div>
+
+    <div class="touch-controls" aria-label="Touch controls">
+      <div class="direction-pad">
+        <span></span><button type="button" data-key="ArrowUp" aria-label="Move up">↑</button><span></span>
+        <button type="button" data-key="ArrowLeft" aria-label="Move left">←</button><span></span><button type="button" data-key="ArrowRight" aria-label="Move right">→</button>
+        <span></span><button type="button" data-key="ArrowDown" aria-label="Move down">↓</button><span></span>
+      </div>
+      <button class="fire-touch" type="button" data-key="Space" aria-label="Fire weapons">FIRE <b>✦</b></button>
+    </div>
+
+    <p class="visually-hidden" id="game-announcer" aria-live="polite"></p>
+  </main>
+</body>
+</html>
